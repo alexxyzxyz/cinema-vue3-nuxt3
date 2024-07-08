@@ -6,7 +6,7 @@
 				<li v-for="row in seats" :key="row[0].row" class="mb-2">
 					<h3 class="text-h6">Ряд: {{ row[0].row }}</h3>
 					<ul class="seats__scroll-container__place d-flex">
-						<li v-for="{ seat, is_free } in row[1]" :key="seat" :class="{ inactive: !is_free }" class="mr-3 mb-1 bg-blue-darken-1 font-weight-bold d-flex justify-center align-center" @click="bookPlace(row[0].row, seat, showdate, daytime, movie_id)">
+						<li v-for="{ seat, is_free } in row[1]" :key="seat" :class="{ inactive: !is_free }" class="mr-3 mb-1 bg-blue-darken-1 font-weight-bold d-flex justify-center align-center" @click="bookPlace(row[0].row, seat, showdate, daytime)">
 							{{ seat }}
 						</li>
 					</ul>
@@ -19,15 +19,11 @@
 	</v-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	const props = defineProps({
 		seats: {
 			type: Array,
 			required: true,
-		},
-		movie_id: {
-			type: Number,
-			required: true
 		},
 		showdate: {
 			type: String,
@@ -42,8 +38,9 @@
 	const emit = defineEmits(['close', 'bookPlace'])
 
 	const close = () => emit('close')
-    const bookPlace = (row, seat, showdate, daytime, movie_id) => {
-        emit('bookPlace', { row, seat, showdate, daytime, movie_id})
+
+    const bookPlace = (row: number, seat: number, showdate: string, daytime: string) => {
+        emit('bookPlace', { row, seat, showdate, daytime})
     }
 </script>
 

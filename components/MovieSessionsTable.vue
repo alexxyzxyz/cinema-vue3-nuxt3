@@ -7,7 +7,7 @@
 			<div class="d-flex">
 				<h4 class="mr-2">Time:</h4>
 				<ul class="time-item d-flex flex-wrap">
-					<li v-for="time in daytime" :key="`${id}-${time}`" class="mr-5 mb-1 bg-yellow font-weight-bold pa-1 rounded-lg" @click="bookTicket(time, showdate)">
+					<li v-for="time in stringToArray(daytime)" :key="`${id}-${time}`" class="mr-5 mb-1 bg-yellow font-weight-bold pa-1 rounded-lg" @click="bookTicket(time, showdate)">
 						<v-tooltip text="Замовити квиток" location="bottom">
 							<template v-slot:activator="{ props }">
 								<span v-bind="props">{{ time }}</span>
@@ -20,7 +20,7 @@
 	</ul>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	const props = defineProps({
 		sessions: {
 			type: Array,
@@ -34,14 +34,13 @@
 
     const emit = defineEmits(['bookTicket'])
 
-    const bookTicket = (daytime, showdate) => {
-        const data = {
-            movie_id: props.id,
-            daytime,
-            showdate
-        }
-        emit('bookTicket', data)
+    const bookTicket = (daytime: string, showdate: string) => {
+        emit('bookTicket', { daytime, showdate })
     }
+
+	const stringToArray = (string: string): string[] => {
+		return string.split(';')
+	}
 </script>
 
 <style lang="scss" scoped>

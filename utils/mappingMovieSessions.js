@@ -3,7 +3,7 @@ export function mapAllMovieSessions(movies, sessions) {
         const sessionDates = sessions[id].map(({ showdate, daytime }) => {
             return {
                 showdate,
-                daytime: daytime.split(';'),
+                daytime
             }
         })
 

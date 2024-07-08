@@ -1,3 +1,4 @@
+import type { NuxtApp } from 'nuxt/schema'
 import { defineStore } from 'pinia'
 
 export const useSessionsStore = defineStore({
@@ -8,29 +9,52 @@ export const useSessionsStore = defineStore({
 		freePlaces: [],
 		selectedMovieName: '',
 	}),
+	getters: {
+		getLoadingState: (state) => state.isLoading,
+	},
 	actions: {
 		async fetchSessions() {
-			try {
-				const {
-					data: {
-						value: { data: sessionsList },
-					},
-					pending,
-				} = await useFetch('/api/sessions')
-				this.sessions = sessionsList
-				this.isLoading = pending.value
-			} catch (err) {
-				console.error(err)
-				this.isLoading = false
-			}
-		},
-		fetchFreePlaces(movie_id: string, daytime: string, showdate: string) {
 			this.isLoading = true
 			const {
 				public: { apiDomain },
 			} = useRuntimeConfig()
 
-			$fetch<string>(`${apiDomain}/showPlaces?movie_id=${movie_id}&daytime=${daytime}&showdate=${showdate}`)
+			await $fetch<string>(`${apiDomain}/movieShows`)
+				.then((res) => {
+					this.sessions = JSON.parse(res).data
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+				.finally(() => {
+					this.isLoading = false
+				})
+		},
+		async fetchSession(movieId: number) {
+			this.isLoading = true
+			const {
+				public: { apiDomain },
+			} = useRuntimeConfig()
+
+			await $fetch<string>(`${apiDomain}/movieShows?movie_id=${movieId}`)
+				.then((res) => {
+					this.sessions = JSON.parse(res).data
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+				.finally(() => {
+					this.isLoading = false
+				})
+		},
+
+		async fetchFreePlaces(movie_id: string, daytime: string, showdate: string) {
+			this.isLoading = true
+			const {
+				public: { apiDomain },
+			} = useRuntimeConfig()
+
+			await $fetch<string>(`${apiDomain}/showPlaces?movie_id=${movie_id}&daytime=${daytime}&showdate=${showdate}`)
 				.then((res) => {
 					this.freePlaces = JSON.parse(res).data
 				})
@@ -44,13 +68,13 @@ export const useSessionsStore = defineStore({
 		defineMovieName(name: string) {
 			this.selectedMovieName = name
 		},
-		saveSeat(movie_id: number, row: number, seat: number, showdate: string, daytime: string) {
+		async saveSeat(movie_id: number, row: number, seat: number, showdate: string, daytime: string) {
 			this.isLoading = true
 			const {
 				public: { apiDomain },
 			} = useRuntimeConfig()
 
-			$fetch<string>(`${apiDomain}/bookPlace`, {
+			await $fetch<string>(`${apiDomain}/bookPlace`, {
 				method: 'POST',
 				body: {
 					movie_id,
@@ -71,7 +95,7 @@ export const useSessionsStore = defineStore({
 						<span>Ticket key: ${bookedTicked.ticketkey}</span>
 					</div>
 					`
-					useNuxtApp().$toast.success(template, { autoClose: false, style: {width: 400} })
+					useNuxtApp().$toast.success(template, { autoClose: false, style: { width: 400 } })
 				})
 				.catch((err) => {
 					useNuxtApp().$toast.error(err.statusText)

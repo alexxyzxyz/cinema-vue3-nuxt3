@@ -4,10 +4,6 @@
 			<v-toolbar-title>
 				<NuxtLink to="/" class="text-capitalize font-weight-bold text-decoration-none text-yellow">Cinema</NuxtLink>
 			</v-toolbar-title>
-			<v-spacer></v-spacer>
-			<v-btn text>
-				<NuxtLink to="/sessions" class="text-capitalize text-decoration-none text-yellow">Sessions</NuxtLink>
-			</v-btn>
 			<v-btn icon @click="searchDialog = true">
 				<v-icon>mdi-magnify</v-icon>
 			</v-btn>
