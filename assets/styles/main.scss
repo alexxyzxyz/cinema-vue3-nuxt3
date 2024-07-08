@@ -1,0 +1,10 @@
+@import './mixins.scss';
+
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: $dark-blue;
+}
+
+.full-width {
+    width: 100%;
+}

@@ -1,0 +1,16 @@
+{
+    "vetur.format.defaultFormatter.html": "prettyhtml",
+    "vetur.completion.scaffoldSnippetSources": {
+        "workspace": "💼",
+        "user": "🗒️",
+        "vetur": "✌"
+    },
+    "vetur.format.defaultFormatterOptions": {
+    "prettyhtml": {
+      "printWidth": 100,              // Adjust this value as per your preference
+      "singleQuote": false,
+      "wrapAttributes": false,
+      "sortAttributes": false
+    }
+  }
+}
