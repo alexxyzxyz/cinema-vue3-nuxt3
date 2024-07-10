@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 import type { Movie } from '@/interfaces/movie'
 import type { SearchQuery } from '@/interfaces/searchQuery'
+import type { Response } from '@/interfaces/response'
 
 export const useMoviesStore = defineStore({
 	id: 'movies',
 	state: () => ({
-		movies: [],
-    movie: {},
-		isLoading: true,
+		movies: [] as Movie[],
+    movie: {} as Movie,
+		isLoading: true as boolean,
 	}),
 	getters: {
 		getMovieById: (state) => {
@@ -24,9 +25,13 @@ export const useMoviesStore = defineStore({
 
 			await $fetch<string>(`${apiDomain}/movies`)
 				.then((res) => {
-					this.movies = JSON.parse(res).data
+					return JSON.parse(res)
 				})
+        .then((parsedResponse: Response) => {
+          this.movies = parsedResponse.data
+        })
 				.catch((err) => {
+          console.error(err)
 					this.movies = []
 				})
 				.finally(() => {
@@ -41,9 +46,13 @@ export const useMoviesStore = defineStore({
 
 			await $fetch<string>(`${apiDomain}/movies?movie_id=${id}`)
 				.then((res) => {
-					this.movie = JSON.parse(res).data[0]
+					return JSON.parse(res)
 				})
+        .then((parsedResponse: Response) => {
+          this.movie = parsedResponse.data[0]
+        })
 				.catch((err) => {
+          console.error(err)
 					this.movies = []
 				})
 				.finally(() => {
@@ -59,9 +68,13 @@ export const useMoviesStore = defineStore({
 
 			await $fetch<string>(`${apiDomain}/movies?name=${name}&genres=${genres}`)
 				.then((res) => {
-					this.movies = JSON.parse(res).data
+					return JSON.parse(res)
 				})
+        .then((parsedResponse: Response) => {
+          this.movies = parsedResponse.data
+        })
 				.catch((err) => {
+          console.error(err)
 					this.movies = []
 				})
 				.finally(() => {

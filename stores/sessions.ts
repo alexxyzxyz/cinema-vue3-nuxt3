@@ -1,13 +1,26 @@
-import type { NuxtApp } from 'nuxt/schema'
 import { defineStore } from 'pinia'
+import type { Response } from '@/interfaces/response'
+import type { Session } from '@/interfaces/session'
+import type { Seat } from '@/interfaces/seat'
+import type { Ticket } from '@/interfaces/ticket'
+
+interface Sessions {
+	[key: number]: Session[]
+}
+
+interface Row {
+	row: number
+}
+
+type FreePlaces = [Row, Seat[]][]
 
 export const useSessionsStore = defineStore({
 	id: 'sessions',
 	state: () => ({
-		isLoading: true,
-		sessions: [],
-		freePlaces: [],
-		selectedMovieName: '',
+		isLoading: true as boolean,
+		sessions: {} as Sessions,
+		freePlaces: [] as FreePlaces,
+		selectedMovieName: '' as string,
 	}),
 	getters: {
 		getLoadingState: (state) => state.isLoading,
@@ -21,7 +34,10 @@ export const useSessionsStore = defineStore({
 
 			await $fetch<string>(`${apiDomain}/movieShows`)
 				.then((res) => {
-					this.sessions = JSON.parse(res).data
+					return JSON.parse(res)
+				})
+				.then((parsedResponse: Response) => {
+					this.sessions = parsedResponse.data
 				})
 				.catch((err) => {
 					console.log(err)
@@ -38,7 +54,10 @@ export const useSessionsStore = defineStore({
 
 			await $fetch<string>(`${apiDomain}/movieShows?movie_id=${movieId}`)
 				.then((res) => {
-					this.sessions = JSON.parse(res).data
+					return JSON.parse(res)
+				})
+				.then((parsedResponse: Response) => {
+					this.sessions = parsedResponse.data
 				})
 				.catch((err) => {
 					console.log(err)
@@ -56,7 +75,10 @@ export const useSessionsStore = defineStore({
 
 			await $fetch<string>(`${apiDomain}/showPlaces?movie_id=${movie_id}&daytime=${daytime}&showdate=${showdate}`)
 				.then((res) => {
-					this.freePlaces = JSON.parse(res).data
+					return JSON.parse(res)
+				})
+				.then((parsedResponse: Response) => {
+					this.freePlaces = parsedResponse.data
 				})
 				.catch((err) => {
 					console.error(err)
@@ -85,7 +107,10 @@ export const useSessionsStore = defineStore({
 				},
 			})
 				.then((res) => {
-					const bookedTicked = JSON.parse(res).data
+					return JSON.parse(res)
+				})
+				.then((parsedResponse) => {
+					const bookedTicked: Ticket = parsedResponse.data
 					const template = `
 					<div style="display: flex; flex-direction: column; margin: -50px 0;">
 						<span><strong>${this.selectedMovieName}</strong></span>

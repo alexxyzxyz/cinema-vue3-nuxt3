@@ -43,11 +43,10 @@
 				</v-col>
 			</v-row>
 		</v-sheet>
-		<v-dialog v-model="seatsDialog">
+		<v-dialog v-model="seatsDialog" width="auto" min-width="100%">
 			 <v-sheet v-if="sessionsStore.isLoading" class="d-flex justify-center align-center" height="500" width="100%">
 				<v-progress-circular color="primary" indeterminate />
-			 </v-sheet>
-			
+			 </v-sheet>			
 			<SeatsTable v-else :seats="sessionsStore.freePlaces" :movie_id="moviesStore.movie.id" :showdate="showdate" :daytime="daytime" @close="seatsDialogclose" @bookPlace="bookPlace" />
 		</v-dialog>
 	</div>
@@ -74,6 +73,7 @@
 	onMounted(async () => {
 		await moviesStore.fetchMovie(+route.params.id)
 		await sessionsStore.fetchSession(+route.params.id)
+		// await sessionsStore.fetchSessions()
 		isLoadingSessions.value = sessionsStore.isLoading
 		isLoadingMovies.value = moviesStore.isLoading
 		sessionsStore.defineMovieName(moviesStore.movie.name)
