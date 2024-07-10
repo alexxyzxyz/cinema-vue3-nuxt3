@@ -1,5 +1,5 @@
-export interface Response {
+export interface Response<T> {
     error_code: number
     error_message: string
-    data: Array<T>
+    data: T;
 }

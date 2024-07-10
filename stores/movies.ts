@@ -27,7 +27,7 @@ export const useMoviesStore = defineStore({
 				.then((res) => {
 					return JSON.parse(res)
 				})
-        .then((parsedResponse: Response) => {
+        .then((parsedResponse: Response<Movie[]>) => {
           this.movies = parsedResponse.data
         })
 				.catch((err) => {
@@ -48,7 +48,7 @@ export const useMoviesStore = defineStore({
 				.then((res) => {
 					return JSON.parse(res)
 				})
-        .then((parsedResponse: Response) => {
+        .then((parsedResponse: Response<Movie[]>) => {
           this.movie = parsedResponse.data[0]
         })
 				.catch((err) => {
@@ -70,7 +70,7 @@ export const useMoviesStore = defineStore({
 				.then((res) => {
 					return JSON.parse(res)
 				})
-        .then((parsedResponse: Response) => {
+        .then((parsedResponse: Response<Movie[]>) => {
           this.movies = parsedResponse.data
         })
 				.catch((err) => {

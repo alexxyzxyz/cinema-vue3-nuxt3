@@ -36,7 +36,7 @@ export const useSessionsStore = defineStore({
 				.then((res) => {
 					return JSON.parse(res)
 				})
-				.then((parsedResponse: Response) => {
+				.then((parsedResponse: Response<Sessions>) => {
 					this.sessions = parsedResponse.data
 				})
 				.catch((err) => {
@@ -56,7 +56,7 @@ export const useSessionsStore = defineStore({
 				.then((res) => {
 					return JSON.parse(res)
 				})
-				.then((parsedResponse: Response) => {
+				.then((parsedResponse: Response<Sessions>) => {
 					this.sessions = parsedResponse.data
 				})
 				.catch((err) => {
@@ -77,7 +77,7 @@ export const useSessionsStore = defineStore({
 				.then((res) => {
 					return JSON.parse(res)
 				})
-				.then((parsedResponse: Response) => {
+				.then((parsedResponse: Response<FreePlaces>) => {
 					this.freePlaces = parsedResponse.data
 				})
 				.catch((err) => {
@@ -109,7 +109,7 @@ export const useSessionsStore = defineStore({
 				.then((res) => {
 					return JSON.parse(res)
 				})
-				.then((parsedResponse) => {
+				.then((parsedResponse: Response<Ticket>) => {
 					const bookedTicked: Ticket = parsedResponse.data
 					const template = `
 					<div style="display: flex; flex-direction: column; margin: -50px 0;">
