@@ -21,7 +21,12 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
-  
+    
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'Get-ChildItem -Path "$(Build.ArtifactStagingDirectory)" -Recurse'
+    
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
