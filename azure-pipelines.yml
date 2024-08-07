@@ -22,6 +22,11 @@ steps:
     npm run build
   displayName: 'npm install and build'
     
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.BinariesDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
