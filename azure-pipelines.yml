@@ -22,18 +22,18 @@ steps:
     npm run build
   displayName: 'npm install and build'
     
-- script: ls -R $(System.DefaultWorkingDirectory)
-  displayName: 'List all files in the working directory'
+- script: ls -R .nuxt
+  displayName: 'List .nuxt directory contents'
 
 - task: CopyFiles@2
   inputs:
-    contents: 'dist/**' # Adjust this if your build output directory is different
-    targetFolder: $(Build.ArtifactStagingDirectory)
-
-- script: ls -R $(Build.ArtifactStagingDirectory)
-  displayName: 'List files in artifact staging directory'
+    contents: '.nuxt/**'
+    targetFolder: $(Build.ArtifactStagingDirectory)/.nuxt
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: MyBuildOutputs
+    pathToPublish: $(Build.ArtifactStagingDirectory)/.nuxt
+    artifactName: 'nuxt-build'
+
+- script: ls -R $(Build.ArtifactStagingDirectory)
+  displayName: 'List files in artifact staging directory'
