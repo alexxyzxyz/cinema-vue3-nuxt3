@@ -22,10 +22,17 @@ steps:
     npm run build
   displayName: 'npm install and build'
     
+- script: ls -R $(System.DefaultWorkingDirectory)
+  displayName: 'List all files in the working directory'
+
 - task: CopyFiles@2
   inputs:
-    contents: '_buildOutput/**'
+    contents: 'dist/**' # Adjust this if your build output directory is different
     targetFolder: $(Build.ArtifactStagingDirectory)
+
+- script: ls -R $(Build.ArtifactStagingDirectory)
+  displayName: 'List files in artifact staging directory'
+
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: $(Build.ArtifactStagingDirectory)
