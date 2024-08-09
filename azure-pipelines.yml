@@ -37,3 +37,11 @@ steps:
 
 - script: ls -R $(Build.ArtifactStagingDirectory)
   displayName: 'List files in artifact staging directory'
+  
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/.nuxt'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: false
